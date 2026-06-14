@@ -6,6 +6,7 @@ import express, {
 import cors from "cors";
 import dotenv from "dotenv";
 import { ZodError } from "zod";
+import dataRouter from "./router/neso";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,6 +15,8 @@ const PORT = process.env.PORT || 5000;
 dotenv.config();
 app.use(cors());
 app.use(express.json());
+
+app.use("/api", dataRouter);
 
 //! GLOBAL ERROR HANDLER
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
