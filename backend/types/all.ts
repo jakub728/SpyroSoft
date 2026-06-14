@@ -3,7 +3,7 @@ export interface GenerationMixItem {
   perc: number;
 }
 
-export interface Input {
+export interface ApiElement {
   from: string;
   to: string;
   generationmix: GenerationMixItem[];

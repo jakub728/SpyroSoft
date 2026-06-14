@@ -1,66 +1,53 @@
 import { Router } from "express";
 import { type Request, type Response, type NextFunction } from "express";
-import { type Input, type IObject } from "../types/all";
+import {
+  type ApiElement,
+  type IObject,
+  type GenerationMixItem,
+} from "../types/all";
 
 const router = Router();
 
+//http://localhost:5000/api/first
 router.get(
   "/first",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const dateNow = new Date();
-      dateNow.setHours(2, 30, 0, 0);
-
-      let timeNow = dateNow.getTime();
-      const add30 = 1800000;
-
-      const fetchPromises = [];
-
-      for (let i = 0; i < 144; i++) {
-        let date = new Date(timeNow).toISOString();
-        let date30 = new Date(timeNow + add30).toISOString();
-
-        const url = `https://api.carbonintensity.org.uk/generation/${date}/${date30}`;
-
-        fetchPromises.push(
-          fetch(url, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          }),
-        );
-
-        timeNow += add30;
-      }
-
-      const httpResponses = await Promise.all(fetchPromises);
-      const fetchData = [];
-
-      for (const httpResponse of httpResponses) {
-        if (!httpResponse.ok) {
-          const error = new Error(
-            `Request failed with status ${httpResponse.status}`,
-          ) as any;
-          error.status = httpResponse.status;
-          return next(error);
-        }
-
-        const jsonResult = await httpResponse.json();
-        fetchData.push(jsonResult.data);
-      }
-
-      const flatData = fetchData.flat();
-
-      //
-      const timeNow2 = dateNow.getTime();
+      dateNow.setHours(0, 0, 0, 0);
+      const tzOffsetMs = dateNow.getTimezoneOffset() * 75000;
+      const startTime = dateNow.getTime() - tzOffsetMs;
       const add1day = 86400000;
-      const date = new Date(timeNow2).toISOString().slice(0, 10);
-      const dateNext = new Date(timeNow2 + add1day).toISOString().slice(0, 10);
-      const dateNextNext = new Date(timeNow2 + 2 * add1day)
+      const endTime = startTime + add1day * 3;
+
+      const start = new Date(startTime).toISOString();
+      const end = new Date(endTime).toISOString();
+
+      const url = `https://api.carbonintensity.org.uk/generation/${start}/${end}`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        const error = new Error(
+          `Request failed with status ${response.status}`,
+        ) as any;
+        error.status = response.status;
+        return next(error);
+      }
+
+      const result = await response.json();
+      const flatData = result.data;
+
+      const date = new Date(startTime).toISOString().slice(0, 10);
+      const dateNext = new Date(startTime + add1day).toISOString().slice(0, 10);
+      const dateNextNext = new Date(startTime + 2 * add1day)
         .toISOString()
         .slice(0, 10);
-      //
 
-      function countFuel(array: Input[], date: string) {
+      function countFuel(array: ApiElement[], date: string) {
         const data = array.filter(
           (e) => e.from.includes(date) && e.to.includes(date),
         );
@@ -98,12 +85,12 @@ router.get(
         return fuelSums;
       }
 
-      const response = [];
-      response.push(countFuel(flatData, date));
-      response.push(countFuel(flatData, dateNext));
-      response.push(countFuel(flatData, dateNextNext));
+      const final = [];
+      final.push(countFuel(flatData, date));
+      final.push(countFuel(flatData, dateNext));
+      final.push(countFuel(flatData, dateNextNext));
 
-      return res.status(200).json(response);
+      return res.status(200).json(flatData);
     } catch (error: any) {
       console.error(error);
       next(error);
@@ -111,72 +98,59 @@ router.get(
   },
 );
 
+//http://localhost:5000/api/second/:hour
 router.get(
   "/second/:hour",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const dateNow = new Date();
-      dateNow.setHours(2, 30, 0, 0);
+      dateNow.setHours(0, 0, 0, 0);
+      const tzOffsetMs = dateNow.getTimezoneOffset() * 75000;
+      const startTime = dateNow.getTime() - tzOffsetMs;
+      const add1day = 86400000;
+      const endTime = startTime + add1day * 3;
 
-      let timeNow = dateNow.getTime();
-      const add30 = 1800000;
+      const start = new Date(startTime).toISOString();
+      const end = new Date(endTime).toISOString();
 
-      const fetchPromises = [];
+      const url = `https://api.carbonintensity.org.uk/generation/${start}/${end}`;
 
-      for (let i = 0; i < 96; i++) {
-        let date = new Date(timeNow).toISOString();
-        let date30 = new Date(timeNow + add30).toISOString();
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
 
-        const url = `https://api.carbonintensity.org.uk/generation/${date}/${date30}`;
-
-        fetchPromises.push(
-          fetch(url, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          }),
-        );
-
-        timeNow += add30;
+      if (!response.ok) {
+        const error = new Error(
+          `Request failed with status ${response.status}`,
+        ) as any;
+        error.status = response.status;
+        return next(error);
       }
 
-      const httpResponses = await Promise.all(fetchPromises);
-      const fetchData = [];
+      const result = await response.json();
+      const flatData = result.data;
 
-      for (const httpResponse of httpResponses) {
-        if (!httpResponse.ok) {
-          const error = new Error(
-            `Request failed with status ${httpResponse.status}`,
-          ) as any;
-          error.status = httpResponse.status;
-          return next(error);
-        }
-
-        const jsonResult = await httpResponse.json();
-        fetchData.push(jsonResult.data);
-      }
-
-      const flatData = fetchData.flat();
-
-      const filteredData = flatData.map((element) => {
+      const filteredData: IObject[] = flatData.map((element: ApiElement) => {
         const newObj: IObject = {
           from: element.from,
           to: element.to,
           cleanFuel:
-            element.generationmix.find(
-              (element: any) => element.fuel === "biomass",
-            )?.perc +
-            element.generationmix.find(
-              (element: any) => element.fuel === "wind",
-            )?.perc +
-            element.generationmix.find(
-              (element: any) => element.fuel === "nuclear",
-            )?.perc +
-            element.generationmix.find(
-              (element: any) => element.fuel === "hydro",
-            )?.perc +
-            element.generationmix.find(
-              (element: any) => element.fuel === "solar",
-            )?.perc,
+            (element.generationmix.find(
+              (el: GenerationMixItem) => el.fuel === "biomass",
+            )?.perc || 0) +
+            (element.generationmix.find(
+              (el: GenerationMixItem) => el.fuel === "wind",
+            )?.perc || 0) +
+            (element.generationmix.find(
+              (el: GenerationMixItem) => el.fuel === "nuclear",
+            )?.perc || 0) +
+            (element.generationmix.find(
+              (el: GenerationMixItem) => el.fuel === "hydro",
+            )?.perc || 0) +
+            (element.generationmix.find(
+              (el: GenerationMixItem) => el.fuel === "solar",
+            )?.perc || 0),
         };
 
         return newObj;
@@ -216,10 +190,10 @@ router.get(
         return next(error);
       }
 
-      const start = best[0].from;
-      const end = best[numberElements - 1].to;
+      const startBest = best[0].from;
+      const endBest = best[numberElements - 1].to;
 
-      return res.status(200).json({ averge: maxAverge, start, end });
+      return res.status(200).json({ averge: maxAverge, startBest, endBest });
     } catch (error: any) {
       console.error(error);
       next(error);

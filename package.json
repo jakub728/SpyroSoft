@@ -3,7 +3,7 @@
     "concurrently": "^10.0.3"
   },
   "scripts": {
-    "dev:install": "npm install && npm install --prefix backend && npx cp-cli backend/.env.example backend/.env && npm install --prefix frontend",
+    "dev:install": "npm install && cd backend && npm install && cd .. && cd frontend && npm install",
     "dev:backend": "cd backend && npm run start",
     "dev:frontend": "cd frontend && npm run dev",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
