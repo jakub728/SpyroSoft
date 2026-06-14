@@ -8,3 +8,9 @@ export interface Input {
   to: string;
   generationmix: GenerationMixItem[];
 }
+
+export interface IObject {
+  from: string;
+  to: string;
+  cleanFuel: number;
+}
