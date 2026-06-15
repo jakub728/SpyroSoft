@@ -13,7 +13,13 @@ const PORT = process.env.PORT || 5000;
 
 //! MIDDLEWARE
 dotenv.config();
-app.use(cors());
+
+const corsOptions = {
+  origin: "https://spyro-soft.vercel.app",
+  methods: ["GET"],
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api", dataRouter);

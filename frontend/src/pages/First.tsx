@@ -4,7 +4,7 @@ import RoundChart from "../components/RoundChart";
 import { type FirstEndpointElement } from "../types/all";
 
 const downloadThreeDaysData = async () => {
-  const { data } = await axios.get("http://localhost:5000/api/first");
+  const { data } = await axios.get("https://spyrosoft-production.up.railway.app/api/first");
   return data;
 };
 

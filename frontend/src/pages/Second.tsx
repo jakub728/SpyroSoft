@@ -5,7 +5,9 @@ import { formatTime } from "../utils/reusable";
 import "../App.css";
 
 const getBestChargingTime = async (hour: string) => {
-  const { data } = await axios.get(`http://localhost:5000/api/second/${hour}`);
+  const { data } = await axios.get(
+    `https://spyrosoft-production.up.railway.app/api/second/${hour}`,
+  );
   return data;
 };
 
