@@ -1,0 +1,22 @@
+nav {
+  background-color: var(--code-bg);
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.nav-element {
+  text-decoration: none;
+  color: var(--text-h);
+  font-weight: bold;
+}
+
+.nav-element:hover {
+  color: var(--accent);
+}
+
+.select {
+  border-radius: 10px;
+  margin: 5px;
+  text-align: center;
+}

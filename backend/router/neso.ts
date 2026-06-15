@@ -90,7 +90,7 @@ router.get(
       final.push(countFuel(flatData, dateNext));
       final.push(countFuel(flatData, dateNextNext));
 
-      return res.status(200).json(flatData);
+      return res.status(200).json(final);
     } catch (error: any) {
       console.error(error);
       next(error);
@@ -108,7 +108,7 @@ router.get(
       const tzOffsetMs = dateNow.getTimezoneOffset() * 75000;
       const startTime = dateNow.getTime() - tzOffsetMs;
       const add1day = 86400000;
-      const endTime = startTime + add1day * 3;
+      const endTime = startTime + add1day * 2;
 
       const start = new Date(startTime).toISOString();
       const end = new Date(endTime).toISOString();
