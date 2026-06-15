@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 dotenv.config();
 
 const corsOptions = {
-  origin: "https://spyro-soft.vercel.app",
+  origin: ["https://spyro-soft.vercel.app", "http://localhost:5173"],
   methods: ["GET"],
   optionsSuccessStatus: 200,
 };
