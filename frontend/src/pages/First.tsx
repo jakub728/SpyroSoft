@@ -4,7 +4,9 @@ import RoundChart from "../components/RoundChart";
 import { type FirstEndpointElement } from "../types/all";
 
 const downloadThreeDaysData = async () => {
-  const { data } = await axios.get("https://spyrosoft-production.up.railway.app/api/first");
+  const { data } = await axios.get(
+    "https://spyrosoft-production.up.railway.app/api/first",
+  );
   return data;
 };
 
@@ -16,8 +18,6 @@ export default function First() {
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
-
-  console.log(data);
 
   return (
     <div>
