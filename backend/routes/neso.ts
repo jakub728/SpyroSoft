@@ -14,14 +14,22 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const dateNow = new Date();
-      dateNow.setHours(0, 0, 0, 0);
-      const tzOffsetMs = dateNow.getTimezoneOffset() * 75000;
-      const startTime = dateNow.getTime() - tzOffsetMs;
-      const add1day = 86400000;
-      const endTime = startTime + add1day * 3;
 
-      const start = new Date(startTime).toISOString();
-      const end = new Date(endTime).toISOString();
+      const startTimeMs = Date.UTC(
+        dateNow.getUTCFullYear(),
+        dateNow.getUTCMonth(),
+        dateNow.getUTCDate(),
+        0,
+        0,
+        0,
+        0,
+      );
+
+      const add1day = 86400000;
+      const endTimeMs = startTimeMs + add1day * 3;
+
+      const start = new Date(startTimeMs).toISOString();
+      const end = new Date(endTimeMs).toISOString();
 
       const url = `https://api.carbonintensity.org.uk/generation/${start}/${end}`;
 
@@ -41,9 +49,11 @@ router.get(
       const result = await response.json();
       const flatData = result.data;
 
-      const date = new Date(startTime).toISOString().slice(0, 10);
-      const dateNext = new Date(startTime + add1day).toISOString().slice(0, 10);
-      const dateNextNext = new Date(startTime + 2 * add1day)
+      const date = new Date(startTimeMs).toISOString().slice(0, 10);
+      const dateNext = new Date(startTimeMs + add1day)
+        .toISOString()
+        .slice(0, 10);
+      const dateNextNext = new Date(startTimeMs + 2 * add1day)
         .toISOString()
         .slice(0, 10);
 
@@ -104,14 +114,22 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const dateNow = new Date();
-      dateNow.setHours(0, 0, 0, 0);
-      const tzOffsetMs = dateNow.getTimezoneOffset() * 75000;
-      const startTime = dateNow.getTime() - tzOffsetMs;
-      const add1day = 86400000;
-      const endTime = startTime + add1day * 2;
 
-      const start = new Date(startTime).toISOString();
-      const end = new Date(endTime).toISOString();
+      const startTimeMs = Date.UTC(
+        dateNow.getUTCFullYear(),
+        dateNow.getUTCMonth(),
+        dateNow.getUTCDate(),
+        0,
+        0,
+        0,
+        0,
+      );
+
+      const add1day = 86400000;
+      const endTimeMs = startTimeMs + add1day * 2;
+
+      const start = new Date(startTimeMs).toISOString();
+      const end = new Date(endTimeMs).toISOString();
 
       const url = `https://api.carbonintensity.org.uk/generation/${start}/${end}`;
 

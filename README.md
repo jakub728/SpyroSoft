@@ -79,6 +79,7 @@ Thanks to `concurrently`, this command will launch in parallel:
 * `npm run dev` – Runs both backend and frontend simultaneously in watch mode[cite: 1].
 * `npm run dev:backend` – Runs only the Express server[cite: 1].
 * `npm run dev:frontend` – Runs only the React application (Vite)[cite: 1].
+* `npm run dev:backend:test` – Runs backend endpoints test[cite: 1].
 
 ---
 ````
