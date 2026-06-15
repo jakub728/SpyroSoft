@@ -9,7 +9,7 @@ A Full-Stack web application designed to fetch, process, and visualize real-time
 ## 📂 Project Structure
 
 ````text
-my-base-fullstack/
+spyro-soft/
 ├── backend/                  # REST API (Express + TypeScript)
 │   ├── src/
 │   │   ├── routes/          # API route definitions
@@ -75,7 +75,7 @@ Thanks to `concurrently`, this command will launch in parallel:
 
 ## 📝 Useful Scripts (Root `package.json`)
 
-* `npm run dev` – Installs dependencies and maked .env files in both /frontend and/backend[cite: 1].
+* `npm run dev` – Installs dependencies in both /frontend and/backend[cite: 1].
 * `npm run dev` – Runs both backend and frontend simultaneously in watch mode[cite: 1].
 * `npm run dev:backend` – Runs only the Express server[cite: 1].
 * `npm run dev:frontend` – Runs only the React application (Vite)[cite: 1].
