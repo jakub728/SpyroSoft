@@ -20,3 +20,17 @@ nav {
   margin: 5px;
   text-align: center;
 }
+
+.submit-button {
+  background-color: var(--text);
+  color: white;
+  border: none;
+  border-radius: 10%;
+  padding: 5px 10px;
+  font-size: bold;
+}
+
+.submit-button:hover {
+  background-color: var(--accent);
+  color: black;
+}

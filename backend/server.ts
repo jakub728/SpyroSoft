@@ -6,7 +6,7 @@ import express, {
 import cors from "cors";
 import dotenv from "dotenv";
 import { ZodError } from "zod";
-import dataRouter from "./router/neso";
+import dataRouter from "./routes/neso";
 
 const app = express();
 const PORT = process.env.PORT || 5000;

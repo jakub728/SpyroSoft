@@ -52,7 +52,7 @@ export default function Second() {
           <option value="5">5</option>
           <option value="6">6</option>
         </select>
-        <button type="submit" disabled={!hour}>
+        <button className="submit-button" type="submit" disabled={!hour}>
           Check
         </button>
       </form>
